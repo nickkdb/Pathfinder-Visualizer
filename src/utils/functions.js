@@ -10,6 +10,8 @@ const colorMap = {
 let found = false;
 
 export const setState = (id, state) => {
+    // use the id of the element to get it from the document
+    //change to matching color based on if it's a start/end/blocker, etc.
     const elem = document.getElementById(id);
     elem.style.backgroundColor = colorMap[state];
     elem.setAttribute("data-type", state);

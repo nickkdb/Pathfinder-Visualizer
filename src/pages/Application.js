@@ -18,7 +18,7 @@ function Application() {
       startPoint: start,     
       updateStartPoint: updateStart,    
     }}>
-        <Navbar />
+        <Header />
         <Grid /> 
     </ThemeContext.Provider>
   );

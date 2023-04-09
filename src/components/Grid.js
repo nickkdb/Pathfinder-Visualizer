@@ -3,11 +3,14 @@ import { setState, resetBoard, resetBlockers, clearCell } from "../utils/functio
 import { ThemeContext } from '../utils/context';
 
 function Grid() {
-    //test
     const rows = []
     const context= useContext(ThemeContext);
 
-    const [cellState, setCellState] = useState('start');
+    //when react rerenders it resets most variable types values
+    //useState doesn't get reset
+    //the first item in array is the variable, the second item is the function to update variable
+
+    const [cellState, setCellState] = useState('start'); //this state is switched to 'start', 'end', 'blocker', when they click the buttons below
     const [mouseDown, setMouse] = useState(false);
 
     const [startPoint, setStart] = useState(false);
@@ -21,24 +24,27 @@ function Grid() {
         rows.push(cols);
     }
 
+    //set the color when a they click on the td (uses the id on the element to target it) 
     const handleCellClick = (cell) => {
-        if (cellState == 'blocker') {
+        //since there can be multiple blockers, we don't run the same code as for start/end, which can only have one
+        if (cellState == 'blocker') { 
             setBlocker(cell);
             return;
         }
         if (cellState == 'start') {
-            if (startPoint) clearCell(startPoint);
-            setState(cell, cellState);
+            if (startPoint) clearCell(startPoint); // if a startPoint already exists, clear it out for the new one
+            setState(cell, cellState); //setState function from functions.js file, changes color of html element
             setStart(cell);
-            context.updateStartPoint(cell);
+            context.updateStartPoint(cell); //ISAIAH: ignore this 
         } else {
-            if (endPoint) clearCell(endPoint,);
-            setState(cell, cellState);
-            setEnd(cell);      
+            if (endPoint) clearCell(endPoint); // if endpoint already exists, clear it out for new one
+            setState(cell, cellState); //setState function from functions.js file, changes color of html element
+            setEnd(cell);       
         }
     }
 
     const setBlocker = (cell) => {
+        // as long as the cell isn't already the start point or end point, make it a blocker
         if (cell != startPoint && cell != endPoint) {
             setState(cell, cellState);
         }
@@ -64,7 +70,8 @@ function Grid() {
   return (
     <>
         <div className={"w-full bg-red-100 h-[100vh] pt-8"}>
-            <div className={'flex justify-between items-center max-w-[600px] mx-auto mb-10'}>
+            <div className={'flex justify-center items-center gap-x-8 max-w-[600px] mx-auto mb-10'}>
+                {/* clicking these buttons changes what "state" the cells are in, which determines what color it changes to*/}
                 <h3 className={'cursor-pointer'} onClick={() => setCellState('start')}>Set Start Point</h3>
                 <h3 className={'cursor-pointer'} onClick={() => setCellState('blocker')}>Set Blocker</h3>
                 <h3 className={'cursor-pointer'} onClick={() => setCellState('end')}>Set Endpoint</h3>
@@ -76,6 +83,7 @@ function Grid() {
                             <tr className={"cellWrapper"}>
                                 {cols.map(cell => {
                                     return (
+                                        //onClick function runs the code above to change the color
                                         <td id={cell} onMouseDown={handleMouseDown} onMouseUp={handleMouseUp} onMouseEnter={() => handleMouseEnter(cell)} data-type="empty" onClick={() => handleCellClick(cell)} className={"w-[25px] h-[25px] border border-solid border-black"}></td>
                                     )
                                 })}
