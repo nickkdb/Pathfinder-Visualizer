@@ -1,0 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.cellWrapper td {
+    transition: background-color 5000ms linear;
+}
+.text-links {
+    @apply text-black pb-3 m-0 hover:text-[#00437e] hover:underline
+}
