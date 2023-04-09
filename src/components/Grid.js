@@ -3,7 +3,7 @@ import { setState, resetBoard, resetBlockers, clearCell } from "../utils/functio
 import { ThemeContext } from '../utils/context';
 
 function Grid() {
-
+    //test
     const rows = []
     const context= useContext(ThemeContext);
 
