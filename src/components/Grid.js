@@ -1,9 +1,9 @@
 import React, {useState, useContext } from 'react';
-import { setState, resetBoard, resetBlockers, clearCell } from "../utils/functions"
+import { setState, resetBoard, resetBlockers, clearCell, createBoard } from "../utils/functions"
 import { ThemeContext } from '../utils/context';
 
 function Grid() {
-    const rows = []
+    const rows = createBoard();
     const context= useContext(ThemeContext);
 
     //when react rerenders it resets most variable types values
@@ -16,27 +16,15 @@ function Grid() {
     const [startPoint, setStart] = useState(false);
     const [endPoint, setEnd] = useState(false);
 
-    for (let i = 0; i < 20; i++) {
-        const cols = [];
-        for (let j = 0; j < 30; j++) {
-            cols.push(`${i}-${j}`);
-        }
-        rows.push(cols);
-    }
-
     //set the color when a they click on the td (uses the id on the element to target it) 
     const handleCellClick = (cell) => {
         //since there can be multiple blockers, we don't run the same code as for start/end, which can only have one
-        if (cellState == 'blocker') { 
-            setBlocker(cell);
-            return;
-        }
         if (cellState == 'start') {
             if (startPoint) clearCell(startPoint); // if a startPoint already exists, clear it out for the new one
             setState(cell, cellState); //setState function from functions.js file, changes color of html element
             setStart(cell);
             context.updateStartPoint(cell); //ISAIAH: ignore this 
-        } else {
+        } else if (cellState == 'end') {
             if (endPoint) clearCell(endPoint); // if endpoint already exists, clear it out for new one
             setState(cell, cellState); //setState function from functions.js file, changes color of html element
             setEnd(cell);       
@@ -46,7 +34,7 @@ function Grid() {
     const setBlocker = (cell) => {
         // as long as the cell isn't already the start point or end point, make it a blocker
         if (cell != startPoint && cell != endPoint) {
-            setState(cell, cellState);
+            setState(cell, 'blocker');
         }
     }
 
@@ -60,13 +48,9 @@ function Grid() {
     
     const handleMouseEnter = (cell) => {
         if (cellState !== 'blocker' || !mouseDown) return;
-        const elem = document.getElementById(cell);
-        const type = elem.getAttribute('data-type');
-        if (type !== 'empty') return;
-        setState(cell, "blocker");
+        setBlocker(cell);
     }
 
-    
   return (
     <>
         <div className={"w-full bg-red-100 h-[100vh] pt-8"}>

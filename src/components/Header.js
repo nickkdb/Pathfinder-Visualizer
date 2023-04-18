@@ -1,5 +1,4 @@
 import React, {useState, useEffect, useRef, useContext} from 'react';
-import ReactDOM from 'react-dom/client';
 import { DFS, BFS } from '../utils/functions';
 import { ThemeContext } from '../utils/context';
 
@@ -7,7 +6,7 @@ function Header() {
 
     const context = useContext(ThemeContext);
 
-    const [algo, setAlgo] = useState(false);
+    const [algo, setAlgo] = useState("DFS");
     const [submenu, setSubMenu] = useState('hidden');
 
     const startAlgorithm = () => {

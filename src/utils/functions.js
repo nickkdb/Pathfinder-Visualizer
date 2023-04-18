@@ -22,6 +22,18 @@ export const clearCell = (id) => {
     elem.setAttribute("data-type", 'empty');
 }
 
+export const createBoard = () => {
+    const rows = [];
+    for (let i = 0; i < 20; i++) {
+        const cols = [];
+        for (let j = 0; j < 30; j++) {
+            cols.push(`${i}-${j}`);
+        }
+        rows.push(cols);
+    }
+    return rows;
+}
+
 export const resetBoard = () => {
     for (let i = 0; i < 20; i++) {
         for (let j = 0; j < 30; j++) {
